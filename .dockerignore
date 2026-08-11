@@ -1,0 +1,9 @@
+data/
+testbed-results*
+*.log
+__pycache__/
+.git
+/venv
+.idea
+.gitignore
+.gitattributes
