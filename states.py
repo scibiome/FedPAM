@@ -92,6 +92,7 @@ class FetchDataState(AppState):
         self.store('threshold', configs['threshold'])
         self.store('num_samples', configs['num_samples'])
         self.store('num_jobs', configs['num_jobs'])
+        self.store('num_hc_iter', configs['num_hc_iter'])
 
         splits = {}
         if self.load('split_mode') == 'directory':

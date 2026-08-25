@@ -50,7 +50,8 @@ class Client():
         dataset: pd.DataFrame = None,
         has_target: bool = False,
         target: str = None,
-        testing: bool = True
+        testing: bool = True,
+        num_hc_iter: int = 1000000
     ):
         self.disable_pgmpy_logs()
 
@@ -68,6 +69,7 @@ class Client():
             scoring_method=BDeu(data = dataset, equivalent_sample_size=equivalent_sample_size),
             expert_knowledge=expert_knowledge,
             show_progress=False,
+            max_iter=num_hc_iter
         )
 
         return structure
@@ -124,7 +126,8 @@ class Client():
         allowed_edges: List = None,
         has_target: bool = False,
         target: str = None,
-        testing: bool = True
+        testing: bool = True,
+        num_hc_iter=1000000
     ):
         self.disable_pgmpy_logs()
 
@@ -142,6 +145,7 @@ class Client():
             scoring_method=BDeu(data = dataset, equivalent_sample_size=equivalent_sample_size),
             expert_knowledge=expert_knowledge,
             show_progress=False,
+            max_iter=num_hc_iter
         )
 
         return structure

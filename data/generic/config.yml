@@ -1,0 +1,20 @@
+fc-fedpam:
+  input:
+    dataset_location: "client.csv"
+    has_target: true
+    target: 'Target'
+    # exp_know_location: "expert_knowledge.json"
+  split:
+    mode: "file"
+    dir: "."  
+  alpha: 0.1
+  gamma: 0.15
+  num_bootstrap_iterations: 100
+  max_iterations: 100
+  homogeneous: True
+  testing: false
+  num_hc_iter: 100
+  threshold: 0.5
+  benchmark: 'hailfinder'
+  num_samples: null
+  num_jobs: 3

@@ -4,3 +4,7 @@ venv
 __pycache__
 data/logs
 data/tests
+data/workflows
+experiments
+old_files
+visualization.py

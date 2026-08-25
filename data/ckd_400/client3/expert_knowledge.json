@@ -1,0 +1,25 @@
+{
+  "whitelist": [
+    ["age", "htn"],
+    ["age", "dm"],
+    ["htn", "bp"],
+    ["htn", "class"],
+    ["dm", "bgr"],
+    ["dm", "class"],
+    ["sc", "bu"],
+    ["bu", "class"],
+    ["hemo", "ane"]
+  ],
+  "blacklist": [
+    ["class", "age"],
+    ["class", "htn"],
+    ["class", "dm"],
+    ["class", "bp"],
+    ["class", "bgr"],
+    ["class", "bu"],
+    ["class", "sc"],
+    ["class", "pcv"],
+    ["bp", "htn"],
+    ["bgr", "dm"]
+  ]
+}

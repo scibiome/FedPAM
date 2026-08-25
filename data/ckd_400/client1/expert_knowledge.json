@@ -1,0 +1,34 @@
+{
+  "whitelist": [
+    ["age", "htn"],
+    ["age", "dm"],
+    ["htn", "bp"],
+    ["htn", "class"],
+    ["dm", "bgr"],
+    ["dm", "class"],
+    ["sc", "bu"],
+    ["bu", "class"],
+    ["hemo", "ane"],
+    ["hemo", "class"],
+    ["cad", "htn"],
+    ["htn", "dm"],
+    ["dm", "bgr"],
+    ["dm", "rbcc"],
+    ["pc", "pcc"],
+    ["bu", "rbc"],
+    ["sc", "ane"],
+    ["pcv", "class"]
+  ],
+  "blacklist": [
+    ["class", "age"],
+    ["class", "htn"],
+    ["class", "dm"],
+    ["class", "bp"],
+    ["class", "bgr"],
+    ["class", "bu"],
+    ["class", "sc"],
+    ["class", "hemo"],
+    ["bp", "htn"],
+    ["bgr", "dm"]
+  ]
+}
