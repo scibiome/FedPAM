@@ -8,3 +8,5 @@ data/workflows
 experiments
 old_files
 visualization.py
+site_info.json
+experiments

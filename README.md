@@ -6,9 +6,6 @@ FedPAM is a federated framework for discrete Bayesian network learning using Pro
    * Contains 400 samples with 24 discrete medical, laboratory, and demographic variables for **binary classification** of disease presence.
    * Stored in directory `data/ckd_400` and is split into $K=3$ homogeneous client datasets.
 
-
-
-
 2. [Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success): 
     * Contains 4,424 samples with
 36 variables for <b>multi-class classification (3 classes) </b> of academic outcomes based on enrollment
@@ -22,25 +19,29 @@ Modify the hyperparameters in `config.yml` file based on your requirements.
 ```
 fc-fedpam:
   input:
-    dataset_loc: "client.csv"
+    dataset_location: "client.csv"
+    has_target: true
     target: 'class'
+    # exp_know_location: "expert_knowledge.json"
   split:
     mode: "file"
     dir: "."  
-  mu: 0.3 
-  lam: 0.3
-  bootstrap_iterations: 100
-  bootstrap_min_iterations: 5 
-  bootstrap_patience: 5
+  alpha: 0.1
+  gamma: 0.15
+  num_bootstrap_iterations: 100
   max_iterations: 100
-  fl_min_iterations: 5 
-  fl_patience: 5     
   homogeneous: True
+  testing: false
+  num_hc_iter: 100
+  threshold: 0.5
+  benchmark: 'child'
+  num_samples: null
+  num_jobs: 3
 ```
 
 #### Description of Hyperparameters:
 
-1. `dataset_loc`: Location of the csv file containing the discrete dataset. 
+1. `dataset_location`: Location of the csv file containing the discrete dataset. 
 During <b>app testing </b>, use the following directory structure:
 ```
 data
@@ -57,7 +58,9 @@ Check the `data` directory in the fc-fedpam repository before running the app to
 
 During actual federated workflow, you will be required to upload a shared `config.yml` file and a `client.csv` file containing the discrete dataset.
 
-2. `target`: Set this to the prediction variable in the dataset. For CKD-400, use 'class' and for the students success prediction dataset, use 'Target'.
+2. `has_target`: A boolean variable to inform the model if a target variable is present in the dataset or not.
+
+2. `target`: Set this to the target variable in the dataset if it exists. For CKD-400, use 'class' and for the students success prediction dataset, use 'Target'.
 
 3. `mode`: Controls how the app finds data splits. If set to `mode: 'directory'`, the app looks for subdirectories inside a base folder to use as separate client data splits. Otherwise, it uses the main `/mnt/input` directory as the single split. During testing, you can change client data directories using the FeatureCloud test-bed/workflow interface.
 

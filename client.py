@@ -135,7 +135,18 @@ class Client():
         if has_target and target:
             forbidden_edges = [(target, var) for var in dataset.columns if var != target]
 
-        expert_knowledge = ExpertKnowledge(forbidden_edges=forbidden_edges, allowed_edges=allowed_edges)
+        # pgmpy's ExpertKnowledge takes `search_space`, not `allowed_edges`.
+        # `allowed_edges` was absorbed by **kwargs and silently discarded, so
+        # this "constrained" search was in fact unconstrained.
+        if allowed_edges is not None:
+            allowed_edges = [tuple(edge) for edge in allowed_edges]
+            # An allowed edge out of the target would defeat forbidden_edges,
+            # so strip those before they reach the search space.
+            if has_target and target:
+                allowed_edges = [(u, v) for u, v in allowed_edges if u != target]
+
+        expert_knowledge = ExpertKnowledge(forbidden_edges=forbidden_edges,
+                                           search_space=allowed_edges)
 
         if testing:
             dataset = dataset.astype('str').astype('category')
