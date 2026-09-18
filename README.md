@@ -60,27 +60,33 @@ During actual federated workflow, you will be required to upload a shared `confi
 
 2. `has_target`: A boolean variable to inform the model if a target variable is present in the dataset or not.
 
-2. `target`: Set this to the target variable in the dataset if it exists. For CKD-400, use 'class' and for the students success prediction dataset, use 'Target'.
+3. `target`: Set this to the target variable in the dataset if it exists. For CKD-400, use 'class' and for the students success prediction dataset, use 'Target'.
 
-3. `mode`: Controls how the app finds data splits. If set to `mode: 'directory'`, the app looks for subdirectories inside a base folder to use as separate client data splits. Otherwise, it uses the main `/mnt/input` directory as the single split. During testing, you can change client data directories using the FeatureCloud test-bed/workflow interface.
+4. `mode`: Controls how the app finds data splits. If set to `mode: 'directory'`, the app looks for subdirectories inside a base folder to use as separate client data splits. Otherwise, it uses the main `/mnt/input` directory as the single split. During testing, you can change client data directories using the FeatureCloud test-bed/workflow interface.
 
-4. `dir`: The base directory (relative to `/mnt/input`) that contains subdirectories for each client's data split. 
+5. `dir`: The base directory (relative to `/mnt/input`) that contains subdirectories for each client's data split. 
 
-5. `mu`: Hyperparameter $\mu$ for tuning the proximal term $\frac{\mu}{2} \lVert P - P_{\text{global}} \rVert _F^2$ that encourages alignment with the global consensus PAM.
+6. `alpha`: Hyperparameter $\alpha$ for tuning the dominance of local PAM $P_k$ over global PAM $P_{global}$, to mitigate local drifts due to statistical heterogeneity. Results show that for homogeneous settings, keeping $\alpha=0.5$ gives the best results as both local and global PAM are created from statistically similar data. However, using lower values like 0.1 or 0.2 is preferred for heterogeneous cases.
 
-6. `lam`: Hyperparameter $\lambda$ for tuning the inner product between normalized Conditional Mutual Information (CMI) matrix $C$ and the PAM $P$ being optimized. The term $-\lambda \langle C, P\rangle$ promotes edges with high CMI.
+7. `gamma`: Hyperparameter $\gamma$ for controlling the speed of convergence. Essentially, this hyperparameter acts as a weight for local DAG in each iteration, ensuring that while the algorithm learns from global knowledge, the local evidence is also preserved. Based on experiments, values like 0.1 and 0.15 show faster convergence to low SHD values for a variety of structural complexities.
 
-7. `bootstrap_iterations`: Number of bootstrapping iterations $B$ for resampling over the dataset to create local PAM.
+8. `num_bootstrap_iterations`: Total number of bootstrap iterations. By default, this number $B$ is set to 100 for higher variability and more structural exploration.
 
-8. `bootstrap_min_iterations`: Minimum number of bootstrapping iterations $B_{min}$.
+9. `max_iterations`: Total number of federated learning rounds.
 
-9. `max_iterations`: Total number of federated learning iterations.
+10. `homogeneous`: Boolean hyperparameter to switch between homogeneous and heterogeneous learning modes. If the existing client data is "known" to be homogeneous, set `homogeneous: true`. Otherwise, set `homogeneous: False`. In fact, in real-world scenarios, keeping the latter is suggested as the client distributions are usually unknown.
 
-10. `fl_min_iterations`: Minimum number of federated learning iterations.
+11. `testing`: To evaluate the algorithm on BN benchmarks, set this parameter to `true`. Otherwise, `false`.
 
-11. `fl_patience`: Number of patience iterations for early stopping of the federated learning process if the average BIC score across clients does not improve for these many iterations.
+12. `benchmark`: Name of the BN benchmark used for structure-only evaluation.
 
-12. `homogeneous`: Boolean hyperparameter to switch between homogeneous and heterogeneous learning modes. If the existing client data is "known" to be homogeneous, set `homogeneous: true`. Otherwise, set `homogeneous: False`. In fact, in real-world scenarios, keeping the latter is suggested as the client distributions are usually unknown.
+13. `num_hc_iter`: Pre-defined number of hill climb search iterations during local learning stage. This decides how much exploration is required by the structure learning algorithm. 
+
+14. `threshold`: Across FL rounds, the local refinement followed by server-side aggregation pushes pushes the PAM probabilities towards either 0 or 1. Therefore, a `threshold` value of 0.5 acts as a suitable measure to cluster the PAM elements into two groups - significant edges and insignificant edges. As a result, the PAM is binzarized and only the significant edges are included in the final global network.
+
+15. `num_samples`: If all clients need to have the same number of samples, use this parameter to control the common sample size. Otherwise, keep it to the default value `null` to ensure variability in client sample size.
+
+16. `num_jobs`: The algorithm supports parallelization of bootstrapping. Use this parameter to allocate $c$ CPU cores for running each Hill Climbing algorithm. During testing, keep in mind that for $K$ clients, $K \times c$ CPU cores will be used in total.
 
 ### Steps to run FedPAM application:
 1. Install [Docker](https://docs.docker.com/desktop/setup/install/windows-install) and pip package `featurecloud`:
@@ -100,6 +106,13 @@ featurecloud app download featurecloud.ai/fc-fedpam
 ```
 featurecloud app build featurecloud.ai/fc-fedpam
 ```
+
+## User Interface
+The FedPAM app provides an interactive user interface to monitor local and global structures during the workflow, followed by an analyses of both structural and evaluation results. Moreover, it allows the user to modify the learned global DAG interactively and store the results in an expert-knowledge JSON file.
+To run the interface, use FeatureCloud's dedicated UI button.
+
+IMPORTANT: The workflow will run and finish as intended but will only be terminated when the coordinator clicks on the `Finish` button (top-right corner on coordinator's app UI page) or the `Stop` button in the Featurecloud workflow UI.
+
 
 ## Testing FedPAM Locally
 To test FedPAM on locally stored datasets and simulate the federated learning workflow, you can use the [FeatureCloud test-bed](https://featurecloud.ai/development/test) or [FeatureCloud Workflow](https://featurecloud.ai/projects). You can also use CLI to run the app:
