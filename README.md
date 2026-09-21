@@ -6,7 +6,7 @@ FedPAM is a federated framework for discrete Bayesian network learning using Pro
    * Contains 400 samples with 24 discrete medical, laboratory, and demographic variables for **binary classification** of disease presence.
    * Stored in directory `data/ckd_400` and is split into $K=3$ homogeneous client datasets.
 
-2. [Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success): 
+2. **[Predict Students' Dropout and Academic Success](https://archive.ics.uci.edu/dataset/697/predict+students+dropout+and+academic+success):** 
     * Contains 4,424 samples with
 36 variables for <b>multi-class classification (3 classes) </b> of academic outcomes based on enrollment
 information and first- and second-semester performance.

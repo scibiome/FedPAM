@@ -13,8 +13,8 @@ fc-fedpam:
   max_iterations: 100
   homogeneous: True
   testing: false
+  benchmark: 'child'
   num_hc_iter: 100
   threshold: 0.5
-  benchmark: 'child'
   num_samples: null
   num_jobs: 3
